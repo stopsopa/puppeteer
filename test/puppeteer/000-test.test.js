@@ -9,10 +9,12 @@ const config = require('../../config');
 
 describe('user', async () => {
 
-    let browser;
+    let browser, page;
 
     beforeAll(async () => {
         browser = await launch(true);
+
+        page = await browser.page(true);
     });
 
     afterAll(async () => {
@@ -20,8 +22,6 @@ describe('user', async () => {
     });
 
     it('agent - file:// loaded', async () => {
-
-        const page = await browser.page(true);
 
         const html = path.resolve(__dirname, '../../web/puppeteer/005-on-console.html');
 
@@ -44,8 +44,6 @@ describe('user', async () => {
     });
 
     it('agent', async () => {
-
-        const page = await browser.page(true);
 
         await page.getTestServer('/web/puppeteer/005-on-console.html');
 
@@ -72,8 +70,6 @@ describe('user', async () => {
      */
     test('console.on()', async () => {
 
-        const page = await browser.page(true);
-
         await page.getTestServer('/web/puppeteer/005-on-console.html');
 
         const t = config.testServer;
@@ -95,8 +91,6 @@ describe('user', async () => {
     test('iPhone 6 -> warmup page -> png', async () => {
 
         const devices = require('puppeteer/DeviceDescriptors');
-
-        const page = await browser.page(true);
 
         await page.emulate(devices['iPhone 6']);
 
@@ -136,46 +130,38 @@ describe('user', async () => {
      */
     test('iPhone 6 -> warmup page -> pdf (must be headless)', async () => {
 
-        const browser = await launch();
+        await page.getTestServer('/web/warmingup.html', {waitUntil: 'networkidle2'});
 
-            const page = await browser.page(true);
+        const file = path.resolve(__dirname, 'hn.pdf');
 
-            await page.getTestServer('/web/warmingup.html', {waitUntil: 'networkidle2'});
-
-            const file = path.resolve(__dirname, 'hn.pdf');
-
-            if (fs.existsSync(file)) {
-
-                fs.unlinkSync(file);
-            }
-
-            if (fs.existsSync(file)) {
-
-                throw `File '${file} still exist'`;
-            }
-
-            // await page.goto('https://news.ycombinator.com', {waitUntil: 'networkidle2'});
-
-            // https://github.com/GoogleChrome/puppeteer/issues/576#issuecomment-325394862
-            // only in headless
-            await page.pdf({
-                path: file,
-                format: 'A4'
-            });
-
-            if ( ! fs.existsSync(file)) {
-
-                throw `File '${file} was not created'`;
-            }
+        if (fs.existsSync(file)) {
 
             fs.unlinkSync(file);
+        }
 
-        await browser.close();
+        if (fs.existsSync(file)) {
+
+            throw `File '${file} still exist'`;
+        }
+
+        // await page.goto('https://news.ycombinator.com', {waitUntil: 'networkidle2'});
+
+        // https://github.com/GoogleChrome/puppeteer/issues/576#issuecomment-325394862
+        // only in headless
+        await page.pdf({
+            path: file,
+            format: 'A4'
+        });
+
+        if ( ! fs.existsSync(file)) {
+
+            throw `File '${file} was not created'`;
+        }
+
+        fs.unlinkSync(file);
     });
 
     it('agent', async () => {
-
-        const page = await browser.page(true);
 
         // selenium : https://stopsopa.github.io/research-protractor/e2e/angular-calc/calc.html
 
