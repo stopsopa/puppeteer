@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>By.js async</title>
+    <style>
+        .test3 {
+            color: rgba(240, 86, 91, 0.93);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Own js check async</h1>
+    <ul>
+        <li class="test1">test 1 text</li>
+        <li class="test2">test 2 text</li>
+        <li class="test3">test 3 text</li>
+        <li class="test4">test 4 text</li>
+        <li class="test5">test 5 text</li>
+    </ul>
+
+    <div id="DOMContentLoaded">before DOMContentLoaded</div>
+    <pre></pre>
+
+    <script>
+
+        window.logInBrowser = str => document.querySelector('pre').innerText = (new Date()).toISOString().substring(0, 19).replace('T', ' ') + ": " + str + "\n" + document.querySelector('pre').innerText;
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            document.getElementById('DOMContentLoaded').innerText = 'after DOMContentLoaded';
+
+            setTimeout(() => {
+
+                var el = document.querySelector('.test3');
+
+                // el.classList.remove('test3');
+                //
+                // el.classList.add('dynamic');
+
+                el.style.color = 'rgba(83, 86, 240, 0.93)'
+            }, 300);
+        });
+    </script>
+</body>
+</html>

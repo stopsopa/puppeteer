@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>wait for js</title>
+</head>
+<body>
+
+    <h1>wait for js</h1>
+
+    <table width="100%">
+        <tbody>
+        <tr>
+            <td valign="top">
+                <ul>
+                </ul>
+            </td>
+            <td valign="top">
+                <pre></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <script>
+        var manipulation = {
+            after: function (referenceNode, newNode) {
+                return this.before(referenceNode.nextSibling, newNode);
+            },
+            before: function (referenceNode, newNode) {
+                referenceNode.parentNode.insertBefore(newNode, referenceNode);
+                return this;
+            },
+            append: function (parentNode, newNode) {
+                parentNode.appendChild(newNode);
+                return this;
+            },
+            prepend: function (parentNode, newNode) {
+                parentNode.insertBefore(newNode, parentNode.firstChild);
+                return this;
+            },
+            remove: function (node) {
+                node.parentNode.removeChild(node);
+                return this;
+            }
+        };
+
+        window.logInBrowser = str => document.querySelector('pre').innerText = (new Date()).toISOString().substring(0, 19).replace('T', ' ') + ": " + str + "\n" + document.querySelector('pre').innerText;
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const ul = document.querySelector('ul');
+
+            let i = 0;
+
+            setInterval(() => {
+
+                const li = document.createElement('li');
+
+                li.innerText = `li ${++i}`;
+
+                manipulation.append(ul, li);
+
+            }, 300);
+        });
+    </script>
+</body>
+</html>

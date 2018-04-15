@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<button id="go">go</button>
+<div></div>
+<script src="../js/angular-1.6.1.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('button').addEventListener('click', function () {
+            document.querySelector('div').innerHTML += 'clicked '; // <- one space after clicked
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "jest": "^22.1.4",
+    "js-yaml": "^3.11.0",
+    "json-stable-stringify": "^1.0.1",
+    "lodash": "^4.17.5",
+    "moment": "^2.22.0",
+    "mysql": "^2.15.0",
+    "puppeteer": "^1.2.0",
+    "selenium-webdriver": "^4.0.0-alpha.1"
+  },
+  "scripts": {
+    "test": "node node_modules/jest/bin/jest.js",
+    "server": "node server.js --port $(node configReader.js --param testServer.port) --log 15"
+  }
+}

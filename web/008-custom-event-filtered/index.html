@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>008-custom-event-filtered</title>
+</head>
+<body>
+
+    <h1>008-custom-event-filtered</h1>
+
+
+    <table width="100%">
+        <tbody>
+        <tr>
+            <td valign="top">
+                <select name="" id="">
+                    <option value="one">one</option>
+                    <option value="two">two</option>
+                </select>
+
+            </td>
+            <td valign="top">
+                <pre></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <script src="../../lib/selenium.min.js"></script>
+    <script>
+
+        window.logInBrowser = str => document.querySelector('pre').innerText = (new Date()).toISOString().substring(0, 19).replace('T', ' ') + ": " + str + "\n" + document.querySelector('pre').innerText;
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const select = document.querySelector('select');
+
+            const event_name = 'test';
+
+            selenium.dispatch(event_name, {
+                value_to_test: 'fake previous remaining event'
+            });
+
+            // this will NOT remove data from selenium_d
+            selenium.subscribe(event_name, data => logInBrowser(JSON.stringify({subscribe_triggered_permanent:data})), true);
+
+            // this will remove data from selenium_d - that's why i can't subscribe here because i need it to trigger test subscription
+            // selenium.subscribe(event_name, data => logInBrowser(JSON.stringify({subscribe_triggered:data})));
+
+            select.addEventListener('change', e => {
+
+                logInBrowser("change triggered, but wait..." + e.target.value);
+
+                setTimeout(() => {
+
+                    selenium.dispatch(event_name, {
+                        value_to_test: 'the event that we are waiting for: ' + e.target.value
+                    });
+
+                    selenium.subscribe(event_name, data => logInBrowser(JSON.stringify({subscribe_triggered:data})), true);
+
+                    logInBrowser('... but action was done now')
+                }, 300);
+            })
+        });
+    </script>
+</body>
+</html>

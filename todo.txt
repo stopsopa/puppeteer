@@ -1,0 +1,2 @@
+run chrome on top of other windows:
+    migth be helpful: https://gist.github.com/anandsunderraman/e351485319a8a0e7df7e

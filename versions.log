@@ -1,0 +1,15 @@
+At the moment of writing this doc 4.0.0-alpha.1 node library
+    "selenium-webdriver": "^4.0.0-alpha.1"
+
+macOs:
+    Sierra Version 10.12.4
+
+java:
+    java version "1.8.0_121"
+    Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+    Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
+
+chrome WebDriver 2.36 https://i.imgur.com/mjHoRbi.png
+    https://chromedriver.storage.googleapis.com/index.html?path=2.36/
+
+chrome Version 65.0.3325.162 (Official Build) (64-bit)

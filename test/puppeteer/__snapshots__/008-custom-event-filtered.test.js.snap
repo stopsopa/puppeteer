@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`008-custom-event-filtered test selenium.js itself 1`] = `
+": ... but action was done now
+: {\\"subscribe_triggered\\":{\\"value_to_test\\":\\"the event that we are waiting for: two\\"}}
+: {\\"subscribe_triggered_permanent\\":{\\"value_to_test\\":\\"the event that we are waiting for: two\\"}}
+: {\\"subscribe_triggered_permanent\\":{\\"value_to_test\\":\\"the event that we are waiting for: two\\"}}
+: {\\"subscribe_triggered_permanent\\":{\\"value_to_test\\":\\"fake previous remaining event\\"}}
+: change triggered, but wait...two
+: {\\"subscribe_triggered_permanent\\":{\\"value_to_test\\":\\"fake previous remaining event\\"}}"
+`;
