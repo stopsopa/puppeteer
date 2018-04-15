@@ -24,6 +24,7 @@ before_script:
   - make test-server & disown
   - sleep 2
   - curl http://localhost:1025
+  - node configReader.js --param
 #  - curl -v https://saucelabs.com/ -I
 ##  - make test-server & disown
 ##  - sleep 2

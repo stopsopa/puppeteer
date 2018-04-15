@@ -83,8 +83,9 @@ config.launchOptions = {
 
 if (process.env.TRAVIS) {
 
-    config.launchOptions.args.push('--no-sandbox');
-    config.launchOptions.args.push('--disable-setuid-sandbox');
+    // https://github.com/GoogleChrome/puppeteer/issues/290#issuecomment-322852784
+        config.launchOptions.args.push('--no-sandbox');
+        config.launchOptions.args.push('--disable-setuid-sandbox');
 //
 //     config.node.port = 80;
 //
