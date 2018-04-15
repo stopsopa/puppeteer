@@ -81,13 +81,16 @@ config.launchOptions = {
     ]
 };
 
-// if (process.env.TRAVIS) {
+if (process.env.TRAVIS) {
+
+    config.launchOptions.args.push('--no-sandbox');
+    config.launchOptions.args.push('--disable-setuid-sandbox');
 //
 //     config.node.port = 80;
 //
 //     config.testServer.schema    = 'https';
 //     config.testServer.host      = 'stopsopa.github.io/state-of-selenium';
 //     config.testServer.port      = 80;
-// }
+}
 
 module.exports = config;
