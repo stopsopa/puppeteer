@@ -128,7 +128,7 @@ describe('user', async () => {
     /**
      * From: https://github.com/GoogleChrome/puppeteer#usage
      */
-    test('iPhone 6 -> warmup page -> pdf (must be headless)', async () => {
+    (config.launchOptions.headless ? it : it.skip)('iPhone 6 -> warmup page -> pdf (must be headless)', async () => {
 
         await page.getTestServer('/web/warmingup.html', {waitUntil: 'networkidle2'});
 
