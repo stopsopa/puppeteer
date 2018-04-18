@@ -148,39 +148,6 @@ module.exports = async options => {
             }
         }(page.goto));
 
-        /**
-             const agent = await page.waitFor(() => new Promise(resolve => {
-
-                var inter = setInterval(() => {
-
-                    const agent = navigator.userAgent;
-
-                    if (agent) {
-
-                        clearInterval(inter);
-
-                        resolve(agent);
-                    }
-
-                }, 200);
-            }));
-         */
-        page.waitForJs = async (createPromiseFn, data, frame) => {
-
-            if (['function', 'string'].indexOf(typeof createPromiseFn) === -1) {
-
-                throw `waitForJs: 'createPromiseFn' should be function or strings`;
-            }
-
-            if ( ! frame) {
-
-                frame = await page.mainFrame();
-            }
-
-            const executionContext = await frame.executionContext();
-
-            return await executionContext.evaluate(createPromiseFn, data);
-        }
 
         page.waitForCustomEvent = (function () {
 
@@ -257,20 +224,20 @@ module.exports = async options => {
          *
          const agent = await page.waitForJs(() => new Promise(resolve => {
 
-            var inter = setInterval(() => {
+                var inter = setInterval(() => {
 
-                const agent = navigator.userAgent;
+                    const agent = navigator.userAgent;
 
-                if (agent) {
+                    if (agent) {
 
-                    clearInterval(inter);
+                        clearInterval(inter);
 
-                    resolve(agent);
-                }
+                        resolve(agent);
+                    }
 
-            }, 200);
+                }, 200);
 
-        }));
+             }));
          */
         page.waitForJs = (fn, data, interval = 300, init) => {
 
@@ -409,168 +376,314 @@ module.exports = async options => {
             return promise;
         };
 
+        (function (old) {
+
+            page.waitForNavigation = async opt => {
+
+                if (typeof opt === 'undefined') {
+
+                    opt = {
+                        waitUntil: 'load',
+                    }
+                }
+
+                await old.call(page, opt);
+
+                await page.sleepSec(0.3);
+
+            }
+
+        }(page.waitForNavigation));
+
         /**
          * Logic based on implementation of page.$
+
+         const option = await page.waitForElement(() => document.querySelector('[data-test="change-language"] option'));
          */
         page.waitForElement = async (fn, interval = 300, data) => {
+            try {
 
-            if (typeof fn === 'string') {
+                if (typeof fn === 'string') {
 
-                let b = '"'
+                    let b = '"'
 
-                if (fn.indexOf('"') > -1) {
+                    if (fn.indexOf('"') > -1) {
 
-                    b = "'";
-                }
-
-                fn = Function(`return document.querySelector(${b}${fn}${b})`);
-            }
-
-            const handle = await page.evaluateHandle(data => new Promise((res, rej) => {
-
-                try {
-                    var fn = eval('(' + data.fn + ')');
-                }
-                catch (e) {
-
-                    return rej(JSON.stringify({
-                        message: `waitForElement inside: eval failed`,
-                        data
-                    }, null, '    '));
-                }
-
-                if (typeof fn !== 'function') {
-
-                    return rej(JSON.stringify({
-                        message: `waitForElement inside: fn is not a function after eval`,
-                        data
-                    }, null, '    '));
-                }
-
-                var t, int;
-
-                const test = () => {
-
-                    t = fn(data.data);
-
-                    if (t) {
-
-                        clearInterval(int);
-
-                        res(t)
+                        b = "'";
                     }
-                };
 
-                int = setInterval(test, data.interval);
+                    fn = Function(`return document.querySelector(${b}${fn}${b})`);
+                }
 
-                test();
+                const handle = await page.evaluateHandle(data => new Promise((res, rej) => {
 
-            }), {
-                fn: fn.toString(),
-                interval,
-                data
-            });
+                    try {
+                        var fn = eval('(' + data.fn + ')');
+                    }
+                    catch (e) {
 
-            const element = handle.asElement();
+                        return rej(JSON.stringify({
+                            message: `waitForElement inside: eval failed`,
+                            data
+                        }, null, '    '));
+                    }
 
-            if (element) {
+                    if (typeof fn !== 'function') {
 
-                return element;
+                        return rej(JSON.stringify({
+                            message: `waitForElement inside: fn is not a function after eval`,
+                            data
+                        }, null, '    '));
+                    }
+
+                    var t, int;
+
+                    const test = () => {
+
+                        t = fn(data.data);
+
+                        if (t) {
+
+                            clearInterval(int);
+
+                            res(t)
+                        }
+                    };
+
+                    int = setInterval(test, data.interval);
+
+                    test();
+
+                }), {
+                    fn: fn.toString(),
+                    interval,
+                    data
+                });
+
+                const element = handle.asElement();
+
+                if (element) {
+
+                    return element;
+                }
+
+                await handle.dispose();
+
+                return null;
             }
+            catch (e) {
 
-            await handle.dispose();
-
-            return null;
+                throw "waitForElements: lost javascript context - page was redirected. \n    original error: " +  e.message;
+            }
         }
+        // page.waitForElement = async (fn, interval = 300, ...rest) => {
+        //
+        //     try {
+        //
+        //         if (typeof fn === 'string') {
+        //
+        //             let b = '"'
+        //
+        //             if (fn.indexOf('"') > -1) {
+        //
+        //                 b = "'";
+        //             }
+        //
+        //             fn = Function(`return document.querySelector(${b}${fn}${b})`);
+        //         }
+        //
+        //         await page.waitForFunction(fn, {
+        //             polling: interval
+        //         }, ...rest);
+        //
+        //         const handle = await page.evaluateHandle(fn, ...rest);
+        //
+        //         if (handle && handle.asElement) {
+        //
+        //             log.dump('wlazł')
+        //
+        //             const element = handle.asElement();
+        //             log.dump(element)
+        //
+        //             if (element) {
+        //
+        //                 return element;
+        //             }
+        //         }
+        //         else {
+        //             log.dump('something ele')
+        //         }
+        //
+        //         // await page.sleep(interval);
+        //
+        //         // for (;;) {
+        //         //
+        //         //     log("\n\nlet's try...\n\n")
+        //         //
+        //         //     try {
+        //         //
+        //         //         const handle = await page.evaluateHandle(fn, data);
+        //         //
+        //         //         if (handle && handle.asElement) {
+        //         //
+        //         //             log.dump('wlazł')
+        //         //
+        //         //             const element = handle.asElement();
+        //         //             log.dump(element)
+        //         //
+        //         //             if (element) {
+        //         //
+        //         //                 return element;
+        //         //             }
+        //         //         }
+        //         //         else {
+        //         //             log.dump('something ele')
+        //         //         }
+        //         //
+        //         //         await page.sleep(interval);
+        //         //
+        //         //         // await handle.dispose();
+        //         //         //
+        //         //         // return null;
+        //         //     }
+        //         //     catch (e) {
+        //         //
+        //         //         log.dump("\n\ncatch error...\n\n")
+        //         //         log.dump(e)
+        //         //         // throw e;
+        //         //     }
+        //         //
+        //         // }
+        //     }
+        //     catch (e) {
+        //
+        //         log.dump("\n\n\n\n");
+        //
+        //         log.dump(e);
+        //     }
+        // };
 
         /**
          * Logic based on implementation of page.$$
          */
         page.waitForElements = async (fn, interval = 300, data) => {
 
-            if (typeof fn === 'string') {
+            try {
 
-                let b = '"'
+                if (typeof fn === 'string') {
 
-                if (fn.indexOf('"') > -1) {
+                    let b = '"'
 
-                    b = "'";
-                }
+                    if (fn.indexOf('"') > -1) {
 
-                fn = Function(`return document.querySelectorAll(${b}${fn}${b})`);
-            }
-
-            const arrayHandle = await page.evaluateHandle(data => new Promise((res, rej) => {
-
-                try {
-                    var fn = eval('(' + data.fn + ')');
-                }
-                catch (e) {
-
-                    return rej(JSON.stringify({
-                        message: `waitForElements inside: eval failed`,
-                        data
-                    }, null, '    '));
-                }
-
-                if (typeof fn !== 'function') {
-
-                    return rej(JSON.stringify({
-                        message: `waitForElements inside: fn is not a function after eval`,
-                        data
-                    }, null, '    '));
-                }
-
-                var t, int;
-
-                const test = () => {
-
-                    t = fn(data.data);
-
-                    if (t) {
-
-                        clearInterval(int);
-
-                        res(t)
+                        b = "'";
                     }
-                };
 
-                int = setInterval(test, data.interval);
+                    fn = Function(`return document.querySelectorAll(${b}${fn}${b})`);
+                }
 
-                test();
+                const arrayHandle = await page.evaluateHandle(data => new Promise((res, rej) => {
 
-            }), {
-                fn: fn.toString(),
-                interval,
-                data
-            });
+                    try {
+                        var fn = eval('(' + data.fn + ')');
+                    }
+                    catch (e) {
 
-            // async $$(selector) {
-            //     const arrayHandle = await this.executionContext().evaluateHandle(
-            //         (element, selector) => element.querySelectorAll(selector),
-            //         this, selector
-            //     );
-            //     const properties = await arrayHandle.getProperties();
-            //     await arrayHandle.dispose();
-            //     const result = [];
-            //     for (const property of properties.values()) {
-            //         const elementHandle = property.asElement();
-            //         if (elementHandle)
-            //             result.push(elementHandle);
-            //     }
-            //     return result;
-            // }
+                        return rej(JSON.stringify({
+                            message: `waitForElements inside: eval failed`,
+                            data
+                        }, null, '    '));
+                    }
 
-            const properties = await arrayHandle.getProperties();
-            await arrayHandle.dispose();
-            const result = [];
-            for (const property of properties.values()) {
-                const elementHandle = property.asElement();
-                if (elementHandle)
-                    result.push(elementHandle);
+                    if (typeof fn !== 'function') {
+
+                        return rej(JSON.stringify({
+                            message: `waitForElements inside: fn is not a function after eval`,
+                            data
+                        }, null, '    '));
+                    }
+
+                    var t, int;
+
+                    const test = () => {
+
+                        t = fn(data.data);
+
+                        if (t) {
+
+                            clearInterval(int);
+
+                            res(t)
+                        }
+                    };
+
+                    int = setInterval(test, data.interval);
+
+                    test();
+
+                }), {
+                    fn: fn.toString(),
+                    interval,
+                    data
+                });
+
+                // async $$(selector) {
+                //     const arrayHandle = await this.executionContext().evaluateHandle(
+                //         (element, selector) => element.querySelectorAll(selector),
+                //         this, selector
+                //     );
+                //     const properties = await arrayHandle.getProperties();
+                //     await arrayHandle.dispose();
+                //     const result = [];
+                //     for (const property of properties.values()) {
+                //         const elementHandle = property.asElement();
+                //         if (elementHandle)
+                //             result.push(elementHandle);
+                //     }
+                //     return result;
+                // }
+
+                const properties = await arrayHandle.getProperties();
+                await arrayHandle.dispose();
+                const result = [];
+                for (const property of properties.values()) {
+                    const elementHandle = property.asElement();
+                    if (elementHandle)
+                        result.push(elementHandle);
+                }
+                return result;
             }
-            return result;
+            catch (e) {
+
+                throw "waitForElements: lost javascript context - page was redirected. \n    original error: " +  e.message;
+            }
         }
+        // function scrollTo(element, to, duration) {
+        //     if (duration <= 0) return;
+        //     var difference = to - element.scrollTop;
+        //     var perTick = difference / duration * 10;
+        //
+        //     setTimeout(function() {
+        //         element.scrollTop = element.scrollTop + perTick;
+        //         if (element.scrollTop === to) return;
+        //         scrollTo(element, to, duration - 10);
+        //     }, 10);
+        // }
+        page.scrollTo = y => page.evaluate(y => {
+            document.body.scrollTop = document.documentElement.scrollTop = y;
+            return true;
+        }, y)
+
+        page.getStatus = () => page.evaluate(() => window.responsestatuscode);
+
+        page.testStatus = async (status = 200) => {
+
+            expect(await page.getStatus()).toBe(status);
+
+            return page;
+        }
+
+        page.getPathname = () => page.evaluate(() => location.pathname + location.search);
 
         return page;
     }
@@ -952,10 +1065,6 @@ module.exports = async options => {
 //         }());
 //     });
 //
-//     driver.getPathname = () => driver.executeScript(function () {
-//         return location.pathname + location.search;
-//     });
-//
 //     driver.getStatus = () => driver.executeScript(function () {
 //         return window.responsestatuscode;
 //     });
@@ -968,21 +1077,6 @@ module.exports = async options => {
 //     }
 //
 //
-//     // function scrollTo(element, to, duration) {
-//     //     if (duration <= 0) return;
-//     //     var difference = to - element.scrollTop;
-//     //     var perTick = difference / duration * 10;
-//     //
-//     //     setTimeout(function() {
-//     //         element.scrollTop = element.scrollTop + perTick;
-//     //         if (element.scrollTop === to) return;
-//     //         scrollTo(element, to, duration - 10);
-//     //     }, 10);
-//     // }
-//     driver.scrollTo = y => driver.waitForJs(y => {
-//         document.body.scrollTop = document.documentElement.scrollTop = y;
-//         return true;
-//     }, y)
 //
 //     /**
 //      * <Dropdown data-test="categories" />

@@ -547,6 +547,29 @@ else {
 
         var url = req.url.split('?')[0];
 
+        var query = req.url.split('?')[1];
+
+        if (typeof query === 'string') {
+
+            query = query.split('&').reduce((acc, val) => {
+                var
+                    a       = val.split(/=/),
+                    key     = a.shift(),
+                    dec     = a.join('=')
+                ;
+                acc[key] = decodeURIComponent(dec);
+                return acc;
+            }, {});
+
+            if (typeof query._redirect === 'string') {
+
+                res.writeHead(query._status || 301, { 'Location': query._redirect });
+
+
+                return setTimeout(() => res.end(), query._timeout ? (parseInt(query._timeout, 10) || 0) : 0);
+            }
+        }
+
         var file = path.resolve(dir, '.' + path.sep + (decodeURI(url).replace(/\.\.+/g, '.')));
 
         if (fs.existsSync(file)) {

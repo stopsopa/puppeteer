@@ -58,7 +58,7 @@ function green {
 #
 #export SELENIUM_BROWSER="$BROWSER_NAME:$BROWSER_VERSION:$BROWSER_PLATFORM"
 
-node node_modules/.bin/jest $@ --verbose --runInBand --modulePathIgnorePatterns "test/examples" "test/minefiled" "test/project"
+node node_modules/.bin/jest $@ --bail --verbose --runInBand --modulePathIgnorePatterns "test/examples" "test/minefiled" "test/project"
 
 #node node_modules/.bin/jest $@ --verbose --runInBand
 #node node_modules/.bin/jest -t="redirection 2" --runInBand --modulePathIgnorePatterns "test/examples"
