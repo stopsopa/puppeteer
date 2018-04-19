@@ -96,7 +96,7 @@ if (require.main === module) {
 
     const a = args.get('param');
 
-    if (typeof a !== 'undefined') {
+    if (a !== true && typeof a !== 'undefined') {
 
         const key = a.split('.');
         let k;
