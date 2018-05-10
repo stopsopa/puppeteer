@@ -22,3 +22,9 @@
 
 # istanbul coverage
 * https://github.com/bcoe/puppeteer-to-istanbul-example
+
+# read more
+* https://www.youtube.com/watch?v=lhZOFUY1weo
+    * https://chromedevtools.github.io/devtools-protocol/
+* http://pptraas.com
+* https://try-puppeteer.appspot.com
