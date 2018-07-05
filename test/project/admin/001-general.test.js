@@ -49,7 +49,7 @@ describe('dbnochange mysql', async () => {
 
         driver = await require(path.resolve(__dirname, '..', '..', '..', 'driver.js'));
 
-        await driver.getProjectServer('/admin');
+        await driver.getServerProject('/admin');
 
         await driver.testStatus();
 
@@ -114,7 +114,7 @@ delete from category where name = :name;
 
         test('dbchange create submit empty form - errors expected', async () => {
 
-            await driver.getProjectServer('/admin/categories');
+            await driver.getServerProject('/admin/categories');
 
             await driver.testStatus();
 
@@ -214,7 +214,7 @@ delete from category where name = :name;
 
         test('dbchange create submit empty form - errors expected', async () => {
 
-            await driver.getProjectServer('/admin/subcategories');
+            await driver.getServerProject('/admin/subcategories');
 
             await driver.testStatus();
 

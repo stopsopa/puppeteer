@@ -19,7 +19,7 @@ describe('wait-for-js-fixed-time', async () => {
 
         const page = await browser.page(true);
 
-        await page.getTestServer('/web/004-wait-for-js-fixed-time/index.html');
+        await page.getServerTest('/web/004-wait-for-js-fixed-time/index.html');
 
         const json = await page.evaluate(json => new Promise(resolve => {
 

@@ -102,11 +102,11 @@ module.exports = async options => {
 
                 return old.apply(page, args);
             }
-            page.getTestServer = (path, ...rest) => {
+            page.getServerTest = (path, ...rest) => {
 
                 if (/^(https?|file):\/\//.test(path)) {
 
-                    process.stdout.write('getTestServer old: ' + path + "\n");
+                    process.stdout.write('getServerTest old: ' + path + "\n");
 
                     return old.apply(page, [path, ...rest]);
                 }
@@ -120,15 +120,15 @@ module.exports = async options => {
 
                 url += path;
 
-                process.stdout.write('getTestServer: ' + url + "\n");
+                process.stdout.write('getServerTest: ' + url + "\n");
 
                 return old.apply(page, [url, ...rest]);
             }
-            page.getProjectServer = (path, ...rest) => {
+            page.getServerProject = (path, ...rest) => {
 
                 if (/^(https?|file):\/\//.test(path)) {
 
-                    process.stdout.write('getProjectServer old: ' + path + "\n");
+                    process.stdout.write('getServerProject old: ' + path + "\n");
 
                     return old.apply(page, [path, ...rest]);
                 }
@@ -142,7 +142,29 @@ module.exports = async options => {
 
                 url += path;
 
-                process.stdout.write('getProjectServer: ' + url + "\n");
+                process.stdout.write('getServerProject: ' + url + "\n");
+
+                return old.apply(page, [url, ...rest]);
+            }
+            page.getServerEnv = (path, ...rest) => {
+
+                if (/^(https?|file):\/\//.test(path)) {
+
+                    process.stdout.write('getServerTest old: ' + path + "\n");
+
+                    return old.apply(page, [path, ...rest]);
+                }
+
+                let url = `${config.testServer.schema}://${config.testServer.host}`;
+
+                if (config.testServer.port != 80) {
+
+                    url += ':' + config.testServer.port;
+                }
+
+                url += path;
+
+                process.stdout.write('getServerTest: ' + url + "\n");
 
                 return old.apply(page, [url, ...rest]);
             }
@@ -948,7 +970,7 @@ module.exports = async options => {
 //      *
 //      *      to test run:
 //      *
-//      *          await driver.getTestServer('/003-own-js-check-async/index.html');
+//      *          await driver.getServerTest('/003-own-js-check-async/index.html');
 //      *
 //      *          let div = await driver.findElement(By.js(() => {
 //      *              return document.querySelector('#DOMContentLoaded');
@@ -966,11 +988,11 @@ module.exports = async options => {
 //
 //             return old.apply(driver, args);
 //         }
-//         driver.getTestServer = (path, ...rest) => {
+//         driver.getServerTest = (path, ...rest) => {
 //
 //             if (/^https?:\/\//.test(path)) {
 //
-//                 process.stdout.write('getTestServer old: ' + path + "\n");
+//                 process.stdout.write('getServerTest old: ' + path + "\n");
 //
 //                 return old.apply(driver, [path, ...rest]);
 //             }
@@ -984,15 +1006,15 @@ module.exports = async options => {
 //
 //             url += path;
 //
-//             process.stdout.write('getTestServer: ' + url + "\n");
+//             process.stdout.write('getServerTest: ' + url + "\n");
 //
 //             return old.apply(driver, [url, ...rest]);
 //         }
-//         driver.getProjectServer = (path, ...rest) => {
+//         driver.getServerProject = (path, ...rest) => {
 //
 //             if (/^https?:\/\//.test(path)) {
 //
-//                 process.stdout.write('getProjectServer old: ' + path + "\n");
+//                 process.stdout.write('getServerProject old: ' + path + "\n");
 //
 //                 return old.apply(driver, [path, ...rest]);
 //             }
@@ -1006,7 +1028,7 @@ module.exports = async options => {
 //
 //             url += path;
 //
-//             process.stdout.write('getProjectServer: ' + url + "\n");
+//             process.stdout.write('getServerProject: ' + url + "\n");
 //
 //             return old.apply(driver, [url, ...rest]);
 //         }

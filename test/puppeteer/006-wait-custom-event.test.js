@@ -19,7 +19,7 @@ describe('wait-custom-event', async () => {
 
         const page = await browser.page(true);
 
-        await page.getTestServer('/web/006-wait-custom-event/inline.html');
+        await page.getServerTest('/web/006-wait-custom-event/inline.html');
 
         await page.click('button');
 

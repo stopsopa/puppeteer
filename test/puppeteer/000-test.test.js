@@ -25,7 +25,7 @@ describe('user', async () => {
 
         const html = path.resolve(__dirname, '../../web/puppeteer/005-on-console.html');
 
-        await page.getTestServer(`file://${html}`);
+        await page.getServerTest(`file://${html}`);
 
         // Get the "viewport" of the page, as reported by the page.
         const dimensions = await page.evaluate(() => {
@@ -45,7 +45,7 @@ describe('user', async () => {
 
     it('agent', async () => {
 
-        await page.getTestServer('/web/puppeteer/005-on-console.html');
+        await page.getServerTest('/web/puppeteer/005-on-console.html');
 
         // page.log('test');
 
@@ -70,7 +70,7 @@ describe('user', async () => {
      */
     test('console.on()', async () => {
 
-        await page.getTestServer('/web/puppeteer/005-on-console.html');
+        await page.getServerTest('/web/puppeteer/005-on-console.html');
 
         const t = config.testServer;
 
@@ -94,7 +94,7 @@ describe('user', async () => {
 
         await page.emulate(devices['iPhone 6']);
 
-        await page.getTestServer('/web/warmingup.html');
+        await page.getServerTest('/web/warmingup.html');
 
         const file = path.resolve(__dirname, 'full.png');
 
@@ -130,7 +130,7 @@ describe('user', async () => {
      */
     (config.launchOptions.headless ? it : it.skip)('iPhone 6 -> warmup page -> pdf (must be headless)', async () => {
 
-        await page.getTestServer('/web/warmingup.html', {waitUntil: 'networkidle2'});
+        await page.getServerTest('/web/warmingup.html', {waitUntil: 'networkidle2'});
 
         const file = path.resolve(__dirname, 'hn.pdf');
 
@@ -165,7 +165,7 @@ describe('user', async () => {
 
         // selenium : https://stopsopa.github.io/research-protractor/e2e/angular-calc/calc.html
 
-        await page.getTestServer('/web/001-js-click/index.html');
+        await page.getServerTest('/web/001-js-click/index.html');
 
         const agent = await page.waitForJs(() => new Promise(resolve => {
 

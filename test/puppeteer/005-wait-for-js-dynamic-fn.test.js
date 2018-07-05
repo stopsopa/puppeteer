@@ -19,7 +19,7 @@ describe('wait-for-js-dynamic-fn', async () => {
 
         const page = await browser.page(true);
 
-        await page.getTestServer('/web/005-wait-for-js-dynamic-fn/index.html');
+        await page.getServerTest('/web/005-wait-for-js-dynamic-fn/index.html');
 
         const json = await page.evaluate(json => new Promise(resolve => {
 

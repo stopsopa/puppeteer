@@ -42,12 +42,23 @@ const config = {
 
     // projectServer: host.server,
 
+    servers: {
+        project: {// yarn server
+            schema: 'http',
+            host: 'localhost',
+            port: 93,
+        },
+        sandbox: {// yarn server
+            schema: 'http',
+            host: 'localhost',
+            port: 1025
+        }
+    },
     projectServer: { // yarn server
         schema: 'http',
         host: 'localhost',
         port: 93,
     },
-
     testServer: { // yarn server
         schema: 'http',
         host: 'localhost',

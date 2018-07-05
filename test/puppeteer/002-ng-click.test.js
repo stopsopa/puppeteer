@@ -19,7 +19,7 @@ describe('ng-click', async () => {
 
         const page = await browser.page(true);
 
-        await page.getTestServer('/web/002-ng-calc/calc.html');
+        await page.getServerTest('/web/002-ng-calc/calc.html');
 
         await page.focus('[ng-model="second"]');
 

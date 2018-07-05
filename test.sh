@@ -12,48 +12,6 @@ function green {
     printf "\e[32m$1\e[0m\n"
 }
 
-#if [ "$1" = "--help" ]; then
-#
-#    cat << EOF
-#
-## run all and then run only changed (selective)
-#    /bin/bash $0 --watch
-#
-## every time run all
-#    /bin/bash $0 --watchAll
-#
-## run only one or matching test
-#    /bin/bash $0 /veg.test.js
-#    /bin/bash $0 test/*e*.test.js
-#    /bin/bash $0 "[^a-z]tea"
-#
-## filtering tests by specific filename pattern or test name pattern
-#    /bin/bash $0 -t 'dbnochange'
-#    /bin/bash $0 test/project/front/page.test.js -t 'dbchange'
-#
-## run selenium server locally
-#    make sel
-#
-## stopping local selenium sever
-#    make sels
-#
-## sequence of testing selenium testing tools itself
-#    make test-server
-#    node node_modules/.bin/jest test/examples/ --verbose --runInBand;echo -e "\n\ntests $([ $? == 0 ] && echo "passed" || echo "failed")\n\n"
-#
-#EOF
-#
-#    exit 0;
-#fi
-
-#echo -e "\n\n ┌────────────────────────────────────────────────────────────────────┐"
-#echo -e " │ sequence of checking || running local selenium server before tests │ "
-#echo -e " └────────────────────────────────────────────────────────────────────┘\n\n"
-#/bin/bash local_selenium_server_ensure.sh
-#echo -e "\n ┌────────────────────────────────────────────────────────────────────┐"
-#echo -e " │ sequence of checking || running local selenium server before tests │ "
-#echo -e " └────────────────────────────────────────────────────────────────────┘\n\n"
-
 #export SELENIUM_REMOTE_URL="http://$HUB_HOST:$HUB_PORT/wd/hub"
 #
 #export SELENIUM_BROWSER="$BROWSER_NAME:$BROWSER_VERSION:$BROWSER_PLATFORM"

@@ -19,7 +19,7 @@ describe('js-click', async () => {
 
         const page = await browser.page(true);
 
-        await page.getTestServer('/web/001-js-click/index.html');
+        await page.getServerTest('/web/001-js-click/index.html');
 
         await page.click('#go');
 
