@@ -13,8 +13,8 @@ while : ; do
 #    make sel
 
 #    node node_modules/.bin/jest test/examples/ --verbose --runInBand
-    /bin/bash run.sh --verbose --runInBand
-#    /bin/bash run.sh test/project/front/001-general.test.js -t redirection
+    /bin/bash test.sh --verbose --runInBand
+#    /bin/bash test.sh test/project/front/001-general.test.js -t redirection
 
     [[ "$?" == "0" ]] || break
 
