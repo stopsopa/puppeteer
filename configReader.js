@@ -102,6 +102,13 @@ if (require.main === module) {
         let k;
         while (k = key.shift()) {
 
+            if (typeof tmp[k] === 'undefined') {
+
+                process.stderr.write(`value under key '${a}' is undefined on the level '${k}'`);
+
+                process.exit(100);
+            }
+
             tmp = tmp[k];
         }
     }

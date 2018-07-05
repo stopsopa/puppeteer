@@ -1,0 +1,62 @@
+{
+  "_from": "bash-make-lifecycle@latest",
+  "_id": "bash-make-lifecycle@1.0.35",
+  "_inBundle": false,
+  "_integrity": "sha512-U8Da1tv2Txil8vW6lig/EyRUErBtdxpBXrG510mrOBNdyLrjct+xyhJyUrLu16AVQW3ecClxIK1uFUtPtV05Qw==",
+  "_location": "/bash-make-lifecycle",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "bash-make-lifecycle@latest",
+    "name": "bash-make-lifecycle",
+    "escapedName": "bash-make-lifecycle",
+    "rawSpec": "latest",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/bash-make-lifecycle/-/bash-make-lifecycle-1.0.35.tgz",
+  "_shasum": "cdd37f35536aad94ff85a31e2c2cb6aedb1ac953",
+  "_spec": "bash-make-lifecycle@latest",
+  "_where": "/Users/sd/Workspace/projects/puppeteer/runtime/docker",
+  "author": {
+    "name": "Szymon Dzialowski"
+  },
+  "bin": {
+    "bash-make-lifecycle": "./install.js"
+  },
+  "bugs": {
+    "url": "https://github.com/stopsopa/bash-make-lifecycle/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "forever": "^0.15.3"
+  },
+  "deprecated": false,
+  "description": "[![Build Status](https://travis-ci.org/stopsopa/bash-make-lifecycle.svg?branch=master)](https://travis-ci.org/stopsopa/bash-make-lifecycle)",
+  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "homepage": "https://github.com/stopsopa/bash-make-lifecycle#readme",
+  "keywords": [
+    "make",
+    "start",
+    "stop",
+    "script"
+  ],
+  "license": "MIT",
+  "main": "install.js",
+  "name": "bash-make-lifecycle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stopsopa/bash-make-lifecycle.git"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "1.0.35"
+}

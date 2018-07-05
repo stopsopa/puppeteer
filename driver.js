@@ -9,7 +9,7 @@ const stringify = require('json-stable-stringify');
 
 const log = require('./lib/logn');
 
-const config = require(path.resolve('.', 'config'));
+const config = require(path.resolve(__dirname, 'config'));
 
 function isObject(a) {
     return (!!a) && (a.constructor === Object); // see the difference between object and array
@@ -124,42 +124,24 @@ module.exports = async options => {
 
                 return old.apply(page, [url, ...rest]);
             }
-            page.getServerProject = (path, ...rest) => {
-
-                if (/^(https?|file):\/\//.test(path)) {
-
-                    process.stdout.write('getServerProject old: ' + path + "\n");
-
-                    return old.apply(page, [path, ...rest]);
-                }
-
-                let url = `${config.projectServer.schema}://${config.projectServer.host}`;
-
-                if (config.projectServer.port != 80) {
-
-                    url += ':' + config.projectServer.port;
-                }
-
-                url += path;
-
-                process.stdout.write('getServerProject: ' + url + "\n");
-
-                return old.apply(page, [url, ...rest]);
-            }
             page.getServerEnv = (path, ...rest) => {
 
+                const c = require(path.resolve(__dirname, 'checktarget.js'));
+
+                const t = process.env.TARGET;
+
                 if (/^(https?|file):\/\//.test(path)) {
 
-                    process.stdout.write('getServerTest old: ' + path + "\n");
+                    process.stdout.write(`getServerEnv ${t}: ` + path + "\n");
 
                     return old.apply(page, [path, ...rest]);
                 }
 
-                let url = `${config.testServer.schema}://${config.testServer.host}`;
+                let url = `${c.schema}://${c.host}`;
 
-                if (config.testServer.port != 80) {
+                if (c.port != 80) {
 
-                    url += ':' + config.testServer.port;
+                    url += ':' + c.port;
                 }
 
                 url += path;
@@ -1007,28 +989,6 @@ module.exports = async options => {
 //             url += path;
 //
 //             process.stdout.write('getServerTest: ' + url + "\n");
-//
-//             return old.apply(driver, [url, ...rest]);
-//         }
-//         driver.getServerProject = (path, ...rest) => {
-//
-//             if (/^https?:\/\//.test(path)) {
-//
-//                 process.stdout.write('getServerProject old: ' + path + "\n");
-//
-//                 return old.apply(driver, [path, ...rest]);
-//             }
-//
-//             let url = `${config.projectServer.schema}://${config.projectServer.host}`;
-//
-//             if (config.projectServer.port != 80) {
-//
-//                 url += ':' + config.projectServer.port;
-//             }
-//
-//             url += path;
-//
-//             process.stdout.write('getServerProject: ' + url + "\n");
 //
 //             return old.apply(driver, [url, ...rest]);
 //         }

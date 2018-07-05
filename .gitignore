@@ -12,3 +12,4 @@ wget-log*
 /hn.pdf
 /test/puppeteer/full.png
 /test/puppeteer/hn.pdf
+/yarn-error*

@@ -36,9 +36,9 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 before_script:
-  - make test-server & disown
-  - sleep 2
-  - curl http://localhost:1025
+#  - make test-server & disown
+#  - sleep 2
+#  - curl http://localhost:1025
   - node configReader.js --param
 #  - curl -v https://saucelabs.com/ -I
 ##  - make test-server & disown
@@ -54,7 +54,7 @@ script:
 #  - node node_modules/.bin/jest --verbose --runInBand --modulePathIgnorePatterns "test/project"
 ##  - node node_modules/.bin/jest --verbose --runInBand test/examples/006
 ##  - node node_modules/.bin/jest --verbose --runInBand test/examples/008 -t "subscribed to wrong event"
-  - /bin/bash test.sh
+  - /bin/bash test.sh --target sandbox
 
 #  - printenv
 #  - foo=TEST_VAR

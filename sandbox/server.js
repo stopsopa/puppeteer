@@ -1,6 +1,6 @@
 /**
  * @author Szymon Działowski
- * @date 2018-03-15
+ * @date 29 Nov 2017
  * @license MIT
  */
 var http        = require('http');
@@ -189,6 +189,7 @@ if (args.get('help')) {
 Standalone static files http server with no dependencies
     
 @author Szymon Działowski https://github.com/stopsopa
+@date 29 Nov 2017
 @license MIT    
 
 parameters:
@@ -245,6 +246,10 @@ parameters:
     --dump 
     
         output config
+        
+    --flag 
+    
+        just extra allowed flag for searching processes using 'ps aux | grep [flagvalue]'
     
 `);
     process.exit(0);
@@ -284,7 +289,7 @@ const diff = function(a, b) {
 
         process.exit(1);
     }
-}(diff(Object.keys(args.all()), 'port dir noindex log help watch ignore inject debug config dump'.split(' '))));
+}(diff(Object.keys(args.all()), 'port dir noindex log help watch ignore inject debug config dump flag'.split(' '))));
 
 function execArgs (args, str) {
     var arr = ['--inject'];
@@ -474,6 +479,7 @@ else {
         }
     }((function (type) {
         type.jpeg = type.jpg;
+        type.log  = type.txt;
         return type;
     }({
         html    : 'text/html; charset=utf-8',
@@ -530,6 +536,13 @@ else {
 
     server.on('request', function (req, res) {
 
+        if (req.url === '/run-sandbox-server.sh-check') {
+
+            res.statusCode = 201;
+
+            return res.end('ok')
+        }
+
         if (inject) {
 
             var test = req.url.match(/\?watch=(.*)/);
@@ -564,7 +577,6 @@ else {
             if (typeof query._redirect === 'string') {
 
                 res.writeHead(query._status || 301, { 'Location': query._redirect });
-
 
                 return setTimeout(() => res.end(), query._timeout ? (parseInt(query._timeout, 10) || 0) : 0);
             }

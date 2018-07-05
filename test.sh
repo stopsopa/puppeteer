@@ -12,9 +12,86 @@ function green {
     printf "\e[32m$1\e[0m\n"
 }
 
-#export SELENIUM_REMOTE_URL="http://$HUB_HOST:$HUB_PORT/wd/hub"
-#
-#export SELENIUM_BROWSER="$BROWSER_NAME:$BROWSER_VERSION:$BROWSER_PLATFORM"
+trim() {
+    local var="$*"
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"
+    echo -n "$var"
+}
+
+if [ "$1" = "--help" ]; then
+
+cat << EOF
+
+    /bin/bash $0 --help
+    /bin/bash $0 --target default
+    /bin/bash $0 --target other test/test.js
+
+EOF
+
+    exit 0
+fi
+
+TARGET="default"
+
+if [ "$1" = "--target" ]; then
+
+    TARGET="$2";
+
+    shift;
+
+    shift;
+fi
+
+TARGET="$(trim "$TARGET")"
+
+if [ "$TARGET" = "" ]; then
+
+    red "TARGET environment variable is empty"
+
+    exit 1
+fi
+
+export TARGET="$TARGET"
+
+BEFORESCRIPT="node configReader.js --param servers.$TARGET.runbefore"
+
+BEFORE="$($BEFORESCRIPT)"
+
+BEFORESTATUS="$?"
+
+if [ "$BEFORESTATUS" = "100" ]; then
+
+cat << EOF
+
+    Value 'servers.$TARGET' in not found in config,
+    but that's ok there is just nothing to run before tests...
+
+EOF
+
+else
+
+    if [ "$BEFORESTATUS" != "0" ]; then
+
+        red "$BEFORESCRIPT - crashed ... "
+
+        exit 1;
+    fi
+fi
+
+BEFORE="$(trim "$BEFORE")"
+
+set -e
+set -o xtrace
+
+if [ "$BEFORE" != "" ]; then
+
+    green "\n    There is something to run before tests, it is:\n        $BEFORE\n"
+
+    $BEFORE;
+fi
 
 node node_modules/.bin/jest $@ --bail --verbose --runInBand --modulePathIgnorePatterns "test/examples" "test/minefiled" "test/project"
 

@@ -22,14 +22,6 @@ const config = {
     timeout: 200000,
     width: 1920, // extends viewport
     height: 1080, // but for window limit is real screen size
-    hub: {
-        host: "localhost", // http://localhost:4445/grid/console?config=true&configDebug=true&refresh=10
-        port: 4444
-    },
-    node: {
-        host: "localhost",
-        port: 5555,
-    },
     browser: {
         browserName: 'chrome',
         platform: 'macOS 10.12', // java.lang.IllegalArgumentException: No enum constant org.openqa.selenium.Platform.macOS1012
@@ -39,38 +31,32 @@ const config = {
     waitToRunSeleniumCluster: 8, // sec
     curlTestMaxTime: 1, // sec
 
-
     // projectServer: host.server,
 
     servers: {
-        project: {// yarn server
+        default: { // target project
             schema: 'http',
             host: 'localhost',
             port: 93,
+            runbefore: `/bin/bash ${path.resolve(__dirname, 'docker', 'puppeteer-docker.sh')}` // optional parameter
         },
-        sandbox: {// yarn server
+        sandbox: { // yarn server
             schema: 'http',
             host: 'localhost',
-            port: 1025
+            port: 1025,
+            runbefore: `/bin/bash ${path.resolve(__dirname, 'sandbox', 'run-sandbox-server.sh')}` // optional parameter
         }
     },
-    projectServer: { // yarn server
-        schema: 'http',
-        host: 'localhost',
-        port: 93,
-    },
-    testServer: { // yarn server
+    testServer: { // yarn server - test server
         schema: 'http',
         host: 'localhost',
         port: 1025
     },
     preparePage: page => {
-
         page.setViewport({
             width: config.width,
             height: config.height,
         });
-
     }
 
     // mysql: { // https://github.com/mysqljs/mysql#connection-options
