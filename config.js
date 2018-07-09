@@ -34,18 +34,18 @@ const config = {
     // projectServer: host.server,
 
     servers: {
-        default: { // target project
+        default: { // host (for now just mac) machine
             schema: 'http',
             host: 'localhost',
             port: 93,
             runbefore: `/bin/bash ${path.resolve(__dirname, 'docker', 'puppeteer-docker.sh')}` // optional parameter
         },
-        sandbox: { // yarn server
+        travis: { // build http server and continue
             schema: 'http',
             host: 'localhost',
             port: 1025,
             runbefore: `/bin/bash ${path.resolve(__dirname, 'sandbox', 'run-sandbox-server.sh')}` // optional parameter
-        }
+        },
     },
     testServer: { // yarn server - test server
         schema: 'http',

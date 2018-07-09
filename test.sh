@@ -27,6 +27,7 @@ cat << EOF
 
     /bin/bash $0 --help
     /bin/bash $0 --target default
+    /bin/bash $0 --target sandbox
     /bin/bash $0 --target other test/test.js
 
 EOF
@@ -49,7 +50,7 @@ TARGET="$(trim "$TARGET")"
 
 if [ "$TARGET" = "" ]; then
 
-    red "TARGET environment variable is empty"
+    red "TARGET environment variable is empty specify it using $0 --target 'target_value'"
 
     exit 1
 fi
@@ -91,6 +92,8 @@ if [ "$BEFORE" != "" ]; then
     green "\n    There is something to run before tests, it is:\n        $BEFORE\n"
 
     $BEFORE;
+
+    green "\n ^^^^^ end ^^^^^\n"
 fi
 
 node node_modules/.bin/jest $@ --bail --verbose --runInBand --modulePathIgnorePatterns "test/examples" "test/minefiled" "test/project"
@@ -107,7 +110,7 @@ node node_modules/.bin/jest $@ --bail --verbose --runInBand --modulePathIgnorePa
 
 STATUS=$?
 
-if [ "$STATUS" == "0" ]; then
+if [ "$STATUS" = "0" ]; then
 
     green "\n    Tests passed\n";
 else

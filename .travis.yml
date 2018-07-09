@@ -54,7 +54,7 @@ script:
 #  - node node_modules/.bin/jest --verbose --runInBand --modulePathIgnorePatterns "test/project"
 ##  - node node_modules/.bin/jest --verbose --runInBand test/examples/006
 ##  - node node_modules/.bin/jest --verbose --runInBand test/examples/008 -t "subscribed to wrong event"
-  - /bin/bash test.sh --target sandbox
+  - /bin/bash test.sh --target travis
 
 #  - printenv
 #  - foo=TEST_VAR
