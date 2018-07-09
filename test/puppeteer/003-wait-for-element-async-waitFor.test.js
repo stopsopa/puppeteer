@@ -19,7 +19,7 @@ describe('wait-for-element-async-waitFor', async () => {
 
         const page = await browser.page(true);
 
-        await page.getServerTest('/web/003-wait-for-element-async/index.html');
+        await page.getServerEnv('/web/003-wait-for-element-async/index.html');
 
         const text = await page.evaluate((one, two, three) => new Promise(resolve => {
 

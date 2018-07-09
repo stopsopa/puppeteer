@@ -37,7 +37,7 @@ const config = {
         default: { // host (for now just mac) machine
             schema: 'http',
             host: 'localhost',
-            port: 93,
+            port: 1025,
             runbefore: `/bin/bash ${path.resolve(__dirname, 'docker', 'puppeteer-docker.sh')}` // optional parameter
         },
         travis: { // build http server and continue

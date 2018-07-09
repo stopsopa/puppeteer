@@ -19,7 +19,7 @@ describe('008-custom-event-filtered', async () => {
 
     test('subscribed to wrong event', async () => {
 
-        await page.getServerTest('/web/008-custom-event-filtered/index.html?wrong');
+        await page.getServerEnv('/web/008-custom-event-filtered/index.html?wrong');
 
         const data = await page.waitForCustomEvent('test');
 
@@ -29,7 +29,7 @@ describe('008-custom-event-filtered', async () => {
 
     test('subscribed and filter event - button waitForElement', async () => {
 
-        await page.getServerTest('/web/008-custom-event-filtered/button.html?filtered_and_sequence');
+        await page.getServerEnv('/web/008-custom-event-filtered/button.html?filtered_and_sequence');
         // await driver.get('https://stopsopa.github.io/state-of-selenium/web/008-custom-event-filtered/index.html?filtered_and_sequence');
 
         // all below are equivalents:
@@ -54,7 +54,7 @@ describe('008-custom-event-filtered', async () => {
 
     test('subscribed and filter event - button waitForElements', async () => {
 
-        await page.getServerTest('/web/008-custom-event-filtered/button.html?filtered_and_sequence');
+        await page.getServerEnv('/web/008-custom-event-filtered/button.html?filtered_and_sequence');
         // await driver.get('https://stopsopa.github.io/state-of-selenium/web/008-custom-event-filtered/index.html?filtered_and_sequence');
 
         // all below are equivalents:
@@ -79,7 +79,7 @@ describe('008-custom-event-filtered', async () => {
 
     test('subscribed and filter event - select,option', async () => {
 
-        await page.getServerTest('/web/008-custom-event-filtered/index.html?filtered_and_sequence');
+        await page.getServerEnv('/web/008-custom-event-filtered/index.html?filtered_and_sequence');
         // await driver.get('https://stopsopa.github.io/state-of-selenium/web/008-custom-event-filtered/index.html?filtered_and_sequence');
 
         const value = await page.waitForJs(() => {

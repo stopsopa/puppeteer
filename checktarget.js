@@ -1,4 +1,6 @@
 
+const path = require('path');
+
 const config = require(path.resolve(__dirname, 'config'));
 
 const t = process.env.TARGET;

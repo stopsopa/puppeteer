@@ -120,21 +120,21 @@ module.exports = async options => {
 
                 url += path;
 
-                process.stdout.write('getServerTest: ' + url + "\n");
+                process.stdout.write('getServerTest === : ' + url + "\n");
 
                 return old.apply(page, [url, ...rest]);
             }
-            page.getServerEnv = (path, ...rest) => {
+            page.getServerEnv = (_path, ...rest) => {
 
                 const c = require(path.resolve(__dirname, 'checktarget.js'));
 
                 const t = process.env.TARGET;
 
-                if (/^(https?|file):\/\//.test(path)) {
+                if (/^(https?|file):\/\//.test(_path)) {
 
-                    process.stdout.write(`getServerEnv ${t}: ` + path + "\n");
+                    process.stdout.write(`getServerEnv ${t}: ` + _path + "\n");
 
-                    return old.apply(page, [path, ...rest]);
+                    return old.apply(page, [_path, ...rest]);
                 }
 
                 let url = `${c.schema}://${c.host}`;
@@ -144,9 +144,9 @@ module.exports = async options => {
                     url += ':' + c.port;
                 }
 
-                url += path;
+                url += _path;
 
-                process.stdout.write('getServerTest: ' + url + "\n");
+                process.stdout.write(`getServerEnv ${t}: ` + url + "\n");
 
                 return old.apply(page, [url, ...rest]);
             }

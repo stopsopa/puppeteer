@@ -22,7 +22,7 @@ describe('009-waitForElement-navigation', async () => {
 
     test('try', async () => {
 
-        await page.getServerTest('/web/009-waitForElement-navigation/001.html');
+        await page.getServerEnv('/web/009-waitForElement-navigation/001.html');
 
         const submit = await page.$('[type="submit"]');
 

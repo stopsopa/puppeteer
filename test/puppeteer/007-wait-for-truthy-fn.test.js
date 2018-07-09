@@ -19,7 +19,7 @@ describe('wait-custom-event', async () => {
 
         const page = await browser.page(true);
 
-        await page.getServerTest('/web/007-wait-for-truthy-fn/index.html');
+        await page.getServerEnv('/web/007-wait-for-truthy-fn/index.html');
 
         const interval = 300;
 
@@ -98,7 +98,7 @@ describe('wait-custom-event', async () => {
 
         const page = await browser.page(true);
 
-        await page.getServerTest('/web/006-wait-custom-event/inline.html');
+        await page.getServerEnv('/web/006-wait-custom-event/inline.html');
 
         const data = await page.waitForJs((data, carry) => {
             logInBrowser('test ' + JSON.stringify(carry))
