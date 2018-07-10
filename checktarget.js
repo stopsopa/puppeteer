@@ -19,9 +19,7 @@ console.log('ENV:', JSON.stringify(
     {
         TARGET: process.env.TARGET || 'NOT SPECIFIED',
         ROOTDIR: process.env.ROOTDIR || 'NOT SPECIFIED'
-    },
-    null,
-    4
+    }
 ))
 
 module.exports = config.servers[t];

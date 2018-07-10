@@ -46,7 +46,9 @@ green "\n    remove key from known_hosts:\n"
 
 ssh-keygen -R [localhost]:$D_P_SSH_PORT
 
-# ssh -o "StrictHostKeyChecking no" root@localhost -p $D_P_SSH_PORT -i image/ssh/id_rsa
+chmod 600 "$DIR/image/ssh/id_rsa"
+
+# ssh -o "StrictHostKeyChecking no" root@localhost -p $D_P_SSH_PORT -i $DIR/image/ssh/id_rsa
 
 green "\n    create tunnel:\n"
 
