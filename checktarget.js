@@ -15,5 +15,14 @@ if ( ! config.servers[t] ) {
     throw `there is no config '${t}' pointed by TARGET environment variable`;
 }
 
+console.log('ENV:', JSON.stringify(
+    {
+        TARGET: process.env.TARGET || 'NOT SPECIFIED',
+        ROOTDIR: process.env.ROOTDIR || 'NOT SPECIFIED'
+    },
+    null,
+    4
+))
+
 module.exports = config.servers[t];
 

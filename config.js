@@ -33,18 +33,35 @@ const config = {
 
     // projectServer: host.server,
 
+    rootdir: path.resolve(__dirname, '.'), // for page.resolve()
     servers: {
         default: { // host (for now just mac) machine
             schema: 'http',
             host: 'localhost',
             port: 1025,
-            runbefore: `/bin/bash ${path.resolve(__dirname, 'docker', 'puppeteer-docker.sh')}` // optional parameter
         },
         travis: { // build http server and continue
             schema: 'http',
             host: 'localhost',
             port: 1025,
-            runbefore: `/bin/bash ${path.resolve(__dirname, 'sandbox', 'run-sandbox-server.sh')}` // optional parameter
+            runbefore: `/bin/bash ${path.resolve(__dirname, 'sandbox', 'run-sandbox-server.sh')}`, // optional parameter
+        },
+        docker: { // host (for now just mac) machine
+            schema: 'http',
+            host: 'localhost', // puppeteer will request from docker container to this host
+            port: 1025, // mount 1025 host port into docker to 1025 localhost port
+            sshport: 2222, // container port 22 mounted on host port 2222 for ssh tunnel on 1025 port
+            containername: 'puppeteer-docker',
+            runbefore: `/bin/bash ${path.resolve(__dirname, 'docker', 'puppeteer-docker.sh')}`, // optional parameter
+            workdir: '/var/app/runtime', // for page.resolve() in docker context
+            getbrowser: async (puppeteer, config) => {
+                return await puppeteer.connect({
+                    browserWSEndpoint: 'ws://localhost:3000'
+                });
+            },
+            getpage: async (browser, config) => {
+                return await browser.pages().then(pages => pages[0]);
+            },
         },
     },
     testServer: { // yarn server - test server

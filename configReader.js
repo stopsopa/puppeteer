@@ -104,7 +104,7 @@ if (require.main === module) {
 
             if (typeof tmp[k] === 'undefined') {
 
-                process.stderr.write(`value under key '${a}' is undefined on the level '${k}'`);
+                process.stderr.write(`value under key '${a}' is undefined on the level '${k}'\n`);
 
                 process.exit(100);
             }

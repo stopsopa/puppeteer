@@ -27,8 +27,9 @@ cat << EOF
 
     /bin/bash $0 --help
     /bin/bash $0 --target default
-    /bin/bash $0 --target sandbox
-    /bin/bash $0 --target other test/test.js
+    /bin/bash $0 --target travis
+    /bin/bash $0 --target docker -t agent
+    /bin/bash $0 --target docker test/test.js
 
 EOF
 
@@ -55,11 +56,22 @@ if [ "$TARGET" = "" ]; then
     exit 1
 fi
 
-export TARGET="$TARGET"
-
 BEFORESCRIPT="node configReader.js --param servers.$TARGET.runbefore"
 
 BEFORE="$($BEFORESCRIPT)"
+
+set -e
+set -o xtrace
+
+export TARGET="$TARGET"
+
+if [ "$TARGET" = "docker" ]; then
+    ROOTDIR="$D_P_WORKDIR"
+else
+    ROOTDIR="$DIR"
+fi
+
+export ROOTDIR="$ROOTDIR"
 
 BEFORESTATUS="$?"
 
@@ -68,7 +80,7 @@ if [ "$BEFORESTATUS" = "100" ]; then
 cat << EOF
 
     Value 'servers.$TARGET' in not found in config,
-    but that's ok there is just nothing to run before tests...
+    but that's probably ok there is just nothing to run before tests...
 
 EOF
 
@@ -84,9 +96,6 @@ fi
 
 BEFORE="$(trim "$BEFORE")"
 
-set -e
-set -o xtrace
-
 if [ "$BEFORE" != "" ]; then
 
     green "\n    There is something to run before tests, it is:\n        $BEFORE\n"
@@ -94,9 +103,23 @@ if [ "$BEFORE" != "" ]; then
     $BEFORE;
 
     green "\n ^^^^^ end ^^^^^\n"
+else
+    green "\n    There is no script to run before tests...\n"
 fi
 
-node node_modules/.bin/jest $@ --bail --verbose --runInBand --modulePathIgnorePatterns "test/examples" "test/minefiled" "test/project"
+TEST="$(cat <<END
+node node_modules/.bin/jest \
+$@ \
+--bail \
+--verbose \
+--runInBand \
+--modulePathIgnorePatterns test/examples test/minefiled test/project
+END
+)";
+
+green "\n\n    executing tests:\n        $TEST\n\n"
+
+$TEST
 
 #node node_modules/.bin/jest $@ --verbose --runInBand
 #node node_modules/.bin/jest -t="redirection 2" --runInBand --modulePathIgnorePatterns "test/examples"

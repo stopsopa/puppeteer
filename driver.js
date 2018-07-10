@@ -33,27 +33,46 @@ module.exports = async options => {
 
     let browser;
 
-    const def = Object.assign({}, config.launchOptions || {});
+    const c = require(path.resolve(__dirname, 'checktarget.js'));
 
-    if (options === true) {
+    // console.log('typeof', typeof c.getbrowser)
 
-        browser = await puppeteer.launch(def);
+    if (typeof c.getbrowser === 'function') {
+
+        console.log(`\n    Connecting to remote browser, ignoring puppeteer.launch options...\n`);
+
+        /**
+         * https://github.com/joelgriffith/browserless#usage-with-puppeteer
+         */
+        browser = await c.getbrowser(puppeteer, c);
+    }
+    else {
+
+        console.log(`\n    Launching browser...\n`);
+
+        const def = Object.assign({}, config.launchOptions || {});
+
+        if (options === true) {
+
+            browser = await puppeteer.launch(def);
+        }
+
+        if (typeof options === 'undefined') {
+
+            browser = await puppeteer.launch();
+        }
+
+        if (isObject(options)) {
+
+            browser = await puppeteer.launch(options);
+        }
+
+        if (typeof options === 'function') {
+
+            browser = await puppeteer.launch(options(def));
+        }
     }
 
-    if (typeof options === 'undefined') {
-
-        browser = await puppeteer.launch();
-    }
-
-    if (isObject(options)) {
-
-        browser = await puppeteer.launch(options);
-    }
-
-    if (typeof options === 'function') {
-
-        browser = await puppeteer.launch(options(def));
-    }
 
     /**
      * @param prepare function|bool (default: undefined)
@@ -71,7 +90,18 @@ module.exports = async options => {
      */
     browser.page = async (prepare, handleLaterThisArgumentToDecideIfCreateAndReturnNewTab) => {
 
-        const page = await browser.pages().then(pages => pages[0]);
+        const c = require(path.resolve(__dirname, 'checktarget.js'));
+
+        let page;
+
+        if (typeof c.getpage === 'function') {
+
+            page = await c.getpage(browser, c);
+        }
+        else {
+
+            page = await browser.pages().then(pages => pages[0]);
+        }
 
         if (prepare) {
 

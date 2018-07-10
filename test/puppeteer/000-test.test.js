@@ -23,7 +23,7 @@ describe('user', async () => {
 
     it('agent - file:// loaded', async () => {
 
-        const html = path.resolve(__dirname, '../../web/puppeteer/005-on-console.html');
+        const html = path.resolve(process.env.ROOTDIR, 'web/puppeteer/005-on-console.html');
 
         await page.getServerEnv(`file://${html}`);
 

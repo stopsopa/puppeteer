@@ -19,11 +19,19 @@ PROC="$(ps aux | grep "${__FLAG}-main" | grep -v grep)" || true
 
 PROC="$(trim "$PROC")" || true
 
+function green {
+    printf "\e[32m$1\e[0m\n"
+}
+
+function red {
+    printf "\e[31m$1\e[0m\n"
+}
+
 if [ "$PROC" == "" ]; then
 
-    printf "\n\n   SERVICE IS OFF\n\n"
+    red "\n\n   SERVICE IS OFF\n\n"
 
     exit 1;
 fi
 
-printf "\n\n   SERVICE IS ON\n\n"
+green "\n\n   SERVICE IS ON\n\n"
