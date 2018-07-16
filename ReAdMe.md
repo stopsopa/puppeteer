@@ -1,6 +1,16 @@
 [![Build Status](https://travis-ci.org/stopsopa/state-of-puppeteer.svg?branch=master)](https://travis-ci.org/stopsopa/state-of-puppeteer)
 
-# 
+# INSTALLATION
+
+prod (without bundled chromium):
+
+    make install-prod
+    
+local (with bundled chromium for greater debugging experience):
+    
+    make install-local
+    
+
 
 
 # DEVNOTE
