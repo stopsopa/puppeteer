@@ -12,7 +12,12 @@ selenium-stop:
 help:
 	@/bin/bash test.sh --help
 
-install:
+install-local:
+	# with bundled chromium
+	yarn install
+
+install-prod:
+	# without bundled chromium, we gonna use chromium from docker
 	# https://github.com/GoogleChrome/puppeteer/issues/244#issuecomment-364222174
 	export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true && yarn install
 
