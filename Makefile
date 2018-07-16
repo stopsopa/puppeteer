@@ -12,6 +12,10 @@ selenium-stop:
 help:
 	@/bin/bash test.sh --help
 
+install:
+	# https://github.com/GoogleChrome/puppeteer/issues/244#issuecomment-364222174
+	export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true && yarn install
+
 test-server:
 	yarn server
 

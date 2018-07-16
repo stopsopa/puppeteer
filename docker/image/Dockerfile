@@ -23,7 +23,8 @@ RUN apt-get update \
     && echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVegRLLTELe8yxvjG+VHDYMhRpDLDa3TN78IFeQZW8WsDw6eKKt8BXoXNEzMigs1hFOuZmmemdesTa8il3WAe7W8FBNm44MrlDfYfBXN7UH14hpI3ruiFm/w2gAHLZH6lgejB09+nBr3OXBEZhVFOYeeFMMQBp8JyhxvL3Am91vbyjnggF39d3ZIGbqUBDgP0+H5I5lJYI71/5vheSvUpxofzb5BigPwY1aKQBcWF5cWL2fS0OZ/me54k4u4uX8h0/qtftQEvU1GZbbdex9fWHQ5/f+14l/Osn3yBAiFW3Ow+/4KKgXbsp1Yf1RBJh1VdxmmUNfTS4s84578R6dkCl puppeteer@host.com' > ~/.ssh/authorized_keys \
     && chmod 600 ~/.ssh/authorized_keys \
     && chmod 700  ~/.ssh/ \
-    && printf "\n\nexport ROOTDIR=/var/app/runtime\nexport TARGET=docker\n\n"  >> ~/.bashrc
+    && printf "\n\nexport ROOTDIR=/var/app/runtime\nexport TARGET=docker\n\n"  >> ~/.bashrc \
+    && printf "\nsshd: ALL\n"  >> /etc/hosts.allow
 
 WORKDIR /var/app/runtime
 

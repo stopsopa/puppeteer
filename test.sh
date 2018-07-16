@@ -3,8 +3,6 @@
 THISFILE=${BASH_SOURCE[0]}
 DIR="$( cd "$( dirname "${THISFILE}" )" && pwd -P )"
 
-source "$DIR/config.sh";
-
 function red {
     printf "\e[91m$1\e[0m\n"
 }
@@ -36,42 +34,46 @@ EOF
     exit 0
 fi
 
-TARGET="default"
+source "$DIR/config.sh";
 
-if [ "$1" = "--target" ]; then
 
-    TARGET="$2";
 
-    shift;
+printf "\n\n"
+echo "D_P_SSH_PORT  =   >$D_P_SSH_PORT<"
+echo "D_P_CONTAINER =   >$D_P_CONTAINER<"
+echo "D_P_SCHEMA    =   >$D_P_SCHEMA<"
+echo "D_P_HOST      =   >$D_P_HOST<"
+echo "D_P_PORT      =   >$D_P_PORT<"
+echo "D_P_VOLUME    =   >$D_P_VOLUME<"
+echo "D_P_WORKDIR   =   >$D_P_WORKDIR<"
+printf "\n\n"
 
-    shift;
-fi
+BEFORESCRIPT="node configReader.js --param servers.$TARGET"
 
-TARGET="$(trim "$TARGET")"
+BEFORE="$($BEFORESCRIPT)"
 
-if [ "$TARGET" = "" ]; then
+BEFORESTATUS="$?"
 
-    red "TARGET environment variable is empty specify it using $0 --target 'target_value'"
+if [ "$BEFORESTATUS" = "100" ]; then
 
-    exit 1
+HELP="$(cat <<EOF
+
+    Value 'servers.$TARGET' in not found in config,
+    but that's probably ok there is just nothing to run before tests...
+
+EOF
+)"
+
+red "$HELP";
+
+
+exit 1
+
 fi
 
 BEFORESCRIPT="node configReader.js --param servers.$TARGET.runbefore"
 
 BEFORE="$($BEFORESCRIPT)"
-
-set -e
-set -o xtrace
-
-export TARGET="$TARGET"
-
-if [ "$TARGET" = "docker" ]; then
-    ROOTDIR="$D_P_WORKDIR"
-else
-    ROOTDIR="$DIR"
-fi
-
-export ROOTDIR="$ROOTDIR"
 
 BEFORESTATUS="$?"
 
@@ -79,7 +81,7 @@ if [ "$BEFORESTATUS" = "100" ]; then
 
 cat << EOF
 
-    Value 'servers.$TARGET' in not found in config,
+    Value 'servers.$TARGET.runbefore' in not found in config,
     but that's probably ok there is just nothing to run before tests...
 
 EOF
@@ -93,6 +95,22 @@ else
         exit 1;
     fi
 fi
+
+set -e
+set -o xtrace
+
+export TARGET="$TARGET"
+
+ROOTDIR="$D_P_VOLUME"
+
+if [ "$D_P_WORKDIR" != "" ]; then
+
+    ROOTDIR="$D_P_WORKDIR"
+fi
+
+export ROOTDIR="$ROOTDIR"
+
+green "\n    ROOTDIR: $ROOTDIR\n"
 
 BEFORE="$(trim "$BEFORE")"
 

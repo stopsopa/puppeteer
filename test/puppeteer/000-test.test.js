@@ -70,7 +70,7 @@ describe('user', async () => {
 
         await page.getServerEnv('/web/puppeteer/005-on-console.html');
 
-        const t = config.testServer;
+        const t = config.servers[process.env.TARGET];
 
         page.on('console', msg =>
             expect(msg.text()).toBe(
