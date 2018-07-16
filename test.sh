@@ -56,13 +56,13 @@ BEFORESTATUS="$?"
 
 if [ "$BEFORESTATUS" = "100" ]; then
 
-HELP="$(cat <<EOF
+
+HELP="
 
     Value 'servers.$TARGET' in not found in config,
     but that's probably ok there is just nothing to run before tests...
 
-EOF
-)"
+"
 
 red "$HELP";
 
