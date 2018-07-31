@@ -22,12 +22,6 @@ const config = {
     timeout: 200000,
     width: 1920, // extends viewport
     height: 1080, // but for window limit is real screen size
-    browser: {
-        browserName: 'chrome',
-        platform: 'macOS 10.12', // java.lang.IllegalArgumentException: No enum constant org.openqa.selenium.Platform.macOS1012
-        version: '65.0',
-        maxInstances: '10'
-    },
     waitToRunSeleniumCluster: 8, // sec
     curlTestMaxTime: 1, // sec
 
@@ -91,7 +85,12 @@ const config = {
             width: config.width,
             height: config.height,
         });
+    },
+    mac: {
+        //
+        getIpOfInterface: ''
     }
+
 
     // mysql: { // https://github.com/mysqljs/mysql#connection-options
     //     connectionLimit : 3,

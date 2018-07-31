@@ -1,0 +1,15 @@
+chromedriver
+geckodriver
+selenium-server-standalone-3.4.0.jar
+hubConfig.json
+/.idea/
+node_modules
+*.zip
+wget-log*
+*.pdf
+/test/puppeteer-pure/*.png
+/full.png
+/hn.pdf
+/test/puppeteer/full.png
+/test/puppeteer/hn.pdf
+/yarn-error*
