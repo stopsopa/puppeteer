@@ -21,3 +21,6 @@ run:
 self-test:
 	/bin/bash selftest.sh
 
+selftest: self-test
+
+
