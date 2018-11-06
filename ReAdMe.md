@@ -18,8 +18,7 @@ Run in one terminal
 
     make testserver
     
-And then try to run default tests:
-
+And then try in second terminal default tests:
 
     make selftest
                 
