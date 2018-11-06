@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/stopsopa/state-of-puppeteer.svg?branch=master)](https://travis-ci.org/stopsopa/state-of-puppeteer)
+
 # Installation
 
 
