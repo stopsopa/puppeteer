@@ -3,7 +3,7 @@
 THISFILE=${BASH_SOURCE[0]}
 DIR="$( cd "$( dirname "${THISFILE}" )" && pwd -P )"
 
-cd $DIR
+cd $DIR/puppeteer
 
-source "$DIR/puppeteer/test.sh"
+source test.sh
 
