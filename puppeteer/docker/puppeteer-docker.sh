@@ -36,7 +36,7 @@ else
     # https://stackoverflow.com/a/1103177
     # g(find local lan ip mac)
     # IP="$(ipconfig getifaddr en0)" - old version, doesn't work on mac in all cases
-    IP="$(ifconfig | grep inet | tail -n 1 | perl -pe 's#^.*?(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}).*$#\1#')"
+    IP="$(ifconfig | grep "inet " | tail -n 1 | perl -pe 's#^.*?(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}).*$#\1#')"
 fi
 
 green "\n    its: $IP\n"
