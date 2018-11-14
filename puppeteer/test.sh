@@ -135,6 +135,15 @@ $@ \
 END
 )";
 
+# running test server
+make ts
+
+WARM="node node_modules/.bin/jest test/warmingup.test.js --verbose --runInBand"
+
+green "\n\n    warming up browser:\n        $WARM\n\n"
+
+$WARM || true
+
 green "\n\n    executing tests:\n        $TEST\n\n"
 
 $TEST
