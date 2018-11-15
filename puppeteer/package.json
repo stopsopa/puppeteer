@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@stopsopa/dotenv-up": "^1.0.15",
     "jest": "^22.1.4",
     "js-yaml": "^3.11.0",
     "json-stable-stringify": "^1.0.1",
@@ -10,6 +11,6 @@
   },
   "scripts": {
     "test": "node node_modules/jest/bin/jest.js",
-    "server": "node docker/server.js  --port $(node configReader.js --param testServer.port) --dir .. --log 15"
+    "server": "node docker/server.js --port $(node configReader.js --param testServer.port) --dir .. --log 15"
   }
 }

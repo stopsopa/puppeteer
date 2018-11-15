@@ -3,6 +3,9 @@
  * @date 29 Nov 2017
  * @license MIT
  */
+
+require('@stopsopa/dotenv-up')(3, true, 'sandbox/server.js');
+
 var http        = require('http');
 
 var path        = require('path');
@@ -462,7 +465,7 @@ if (watch) {
 }
 else {
 
-    var port    = parseInt(args.get('port', 8080), 10);
+    var port    = parseInt(args.get('port', process.env.NODE_SSR_PORT), 10);
 
     var logs    = parseInt(args.get('log', 1), 10);
 
@@ -534,6 +537,20 @@ else {
         return content;
     }
 
+    const controllers = () => {
+
+        const dir = path.resolve(__dirname, 'controllers');
+
+        return fs.readdirSync(dir).map(file => {
+
+            const lib = path.resolve(dir, file);
+
+            delete require.cache[lib];
+
+            return require(lib);
+        });
+    }
+
     server.on('request', function (req, res) {
 
         if (req.url === '/run-sandbox-server.sh-check') {
@@ -559,6 +576,12 @@ else {
         }
 
         var url = req.url.split('?')[0];
+
+        (function (a) {
+            if (url.indexOf(a) === 0) {
+                url = url.substring(a.length);
+            }
+        }('/app_dev.php'));
 
         var query = req.url.split('?')[1];
 
@@ -646,9 +669,18 @@ else {
         }
         else {
 
-            res.statusCode = 404;
+            const found = controllers().find(c => c.url === url);
 
-            res.end(`<div style="color: #b10000; font-family: tahoma;">status code ${res.statusCode}: ${req.url}</div>`);
+            if (found) {
+
+                found(req, res, query);
+            }
+            else {
+
+                res.statusCode = 404;
+
+                res.end(`<div style="color: #b10000; font-family: tahoma;">status code ${res.statusCode}: ${req.url}</div>`);
+            }
 
             (logs & 1) && log(`${time()} \x1b[31m${res.statusCode}\x1b[0m: ${req.url}`);
         }

@@ -98,11 +98,29 @@ if (require.main === module) {
 
     if (a !== true && typeof a !== 'undefined') {
 
+        let level = 0;
+
         const key = a.split('.');
         let k;
         while (k = key.shift()) {
 
             if (typeof tmp[k] === 'undefined') {
+
+                if (level === 0) {
+
+                    require('@stopsopa/dotenv-up')(2, false, 'puppeteer/config.js');
+
+                    if (typeof process.env[k] === 'undefined') {
+
+                        process.stderr.write(`value under key '${a}' in process.env'\n`);
+
+                        process.exit(101);
+                    }
+
+                    process.stdout.write(process.env[k]);
+
+                    process.exit(0);
+                }
 
                 process.stderr.write(`value under key '${a}' is undefined on the level '${k}'\n`);
 
@@ -110,6 +128,8 @@ if (require.main === module) {
             }
 
             tmp = tmp[k];
+
+            level += 1;
         }
     }
 

@@ -1,4 +1,6 @@
 
+require('@stopsopa/dotenv-up')(2, false, 'puppeteer/config.js');
+
 const path              = require('path');
 
 // const host              = require('../react/hosts');
@@ -32,18 +34,18 @@ const config = {
         default: { // host (for now just mac) machine
             schema: 'http',
             host: 'localhost',
-            port: 1025,
+            port: parseInt(process.env.NODE_PORT || 1028, 10),
         },
         travis: { // build http server and continue
             schema: 'http',
             host: 'localhost',
-            port: 1025,
+            port: parseInt(process.env.NODE_PORT || 1025, 10),
             runbefore: `/bin/bash ${path.resolve(__dirname, 'sandbox', 'run-sandbox-server.sh')}`, // optional parameter
         },
         docssh: { // host (for now just mac) machine
             schema: 'http',
             host: 'localhost', // puppeteer will request from docker container to this host
-            port: 1025, // mount 1025 host port into docker to 1025 localhost port
+            port: parseInt(process.env.NODE_PORT || 1025, 10), // mount 1025 host port into docker to 1025 localhost port
             sshport: 2222, // container port 22 mounted on host port 2222 for ssh tunnel on 1025 port
             containername: 'puppeteer-docker',
             runbefore: `/bin/bash ${path.resolve(__dirname, 'docker', 'puppeteer-docker.sh')}`, // optional parameter
@@ -60,7 +62,7 @@ const config = {
         dochost: { // host (for now just mac) machine
             schema: 'http',
             host: 'host', // puppeteer will request from docker container to this host
-            port: 1025, // mount 1025 host port into docker to 1025 localhost port
+            port: parseInt(process.env.NODE_PORT || 1025, 10), // mount 1025 host port into docker to 1025 localhost port
             // sshport: 2222, // container port 22 mounted on host port 2222 for ssh tunnel on 1025 port
             containername: 'puppeteer-docker',
             runbefore: `/bin/bash ${path.resolve(__dirname, 'docker', 'puppeteer-docker.sh')}`, // optional parameter
@@ -78,7 +80,7 @@ const config = {
     testServer: { // yarn server - test server
         schema: 'http',
         host: 'localhost',
-        port: 1025
+        port: parseInt(process.env.NODE_PORT || 1025, 10),
     },
     preparePage: page => {
         page.setViewport({

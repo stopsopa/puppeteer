@@ -131,7 +131,7 @@ $@ \
 --bail \
 --verbose \
 --runInBand \
---modulePathIgnorePatterns test/examples test/minefiled test/project
+--modulePathIgnorePatterns test/examples test/minefield test/project test/puppeteer
 END
 )";
 
